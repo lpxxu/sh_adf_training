@@ -1,6 +1,118 @@
 {
-	"name": "pipeline1",
+	"name": "p_CopyEmployeeData",
 	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_csv_Input_Employee",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": {
+								"value": "@pipeline().parameters.InputFileName",
+								"type": "Expression"
+							},
+							"Directory": {
+								"value": "@pipeline().parameters.inputDirectory",
+								"type": "Expression"
+							},
+							"FileName": {
+								"value": "@pipeline().parameters.InputFileName",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_csv_Output_Employee",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": {
+								"value": "@pipeline().parameters.outputContainer",
+								"type": "Expression"
+							},
+							"Directory": {
+								"value": "@pipeline().parameters.outputDirectory",
+								"type": "Expression"
+							},
+							"Filename": {
+								"value": "@pipeline().parameters.outputFilename",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"inputContainer": {
+				"type": "string",
+				"defaultValue": "adftutorial"
+			},
+			"inputDirectory": {
+				"type": "string",
+				"defaultValue": "input"
+			},
+			"InputFileName": {
+				"type": "string"
+			},
+			"outputDirectory": {
+				"type": "string",
+				"defaultValue": "adftutorial"
+			},
+			"outputContainer": {
+				"type": "string",
+				"defaultValue": "output"
+			},
+			"outputFilename": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
