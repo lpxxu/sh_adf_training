@@ -53,7 +53,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": {
-								"value": "@pipeline().parameters.InputFileName",
+								"value": "@pipeline().parameters.inputContainer",
 								"type": "Expression"
 							},
 							"Directory": {
@@ -99,18 +99,19 @@
 				"defaultValue": "input"
 			},
 			"InputFileName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "emp.txt"
 			},
 			"outputDirectory": {
-				"type": "string",
-				"defaultValue": "adftutorial"
-			},
-			"outputContainer": {
 				"type": "string",
 				"defaultValue": "output"
 			},
 			"outputFilename": {
 				"type": "string"
+			},
+			"outputContainer": {
+				"type": "string",
+				"defaultValue": "adftutorial"
 			}
 		},
 		"annotations": []
