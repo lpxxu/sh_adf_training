@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copys_7io",
+				"name": "Copy_7io",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
