@@ -1,0 +1,40 @@
+{
+	"name": "Trg_emp_Daily",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "p_CopyEmployeeData",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"pr_container": "adftutorial",
+					"pr_output_container": "adftutorial",
+					"pr_folder": "input",
+					"pr_output_folder": "output",
+					"pr_filename": "emp.txt",
+					"pr_output_filename": "emp_out.txt"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2026-03-09T12:00:00",
+				"timeZone": "Pacific Standard Time",
+				"schedule": {
+					"minutes": [
+						0
+					],
+					"hours": [
+						6
+					]
+				}
+			}
+		}
+	}
+}
