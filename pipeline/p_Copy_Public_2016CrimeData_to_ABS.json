@@ -61,6 +61,38 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "LabNotebook",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Copy_7io",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/msstudent-59809865@lodsprodmca.onmicrosoft.com/Data-Ingestion-Via-ADF/ADF Notebooks/Transform Data in ADF (Using Azure Databricks)",
+					"baseParameters": {
+						"accountName": "adftutorialrs20260309",
+						"accountKey": "",
+						"containerName": "dwtemp"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "AzureDatabricks_rs",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"annotations": []
