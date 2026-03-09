@@ -5,8 +5,17 @@
 		"factoryName": {
 			"value": "rajsadf"
 		},
+		"AzureBlobStorage_Dbx_connectionString": {
+			"value": ""
+		},
 		"ls_abs_PrimaryStorageAcct_connectionString": {
 			"value": ""
+		},
+		"AzureDatabricks_rs_properties_typeProperties_existingClusterId": {
+			"value": "0309-165937-zm70ii7n"
+		},
+		"AzureKeyVault_rs_properties_typeProperties_baseUrl": {
+			"value": "https://rs-kv-ADFLab.vault.azure.net/"
 		},
 		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_container": {
 			"value": "adftutorial"

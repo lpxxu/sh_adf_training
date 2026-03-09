@@ -7,9 +7,21 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "rajsadf"
 		},
+		"AzureBlobStorage_Dbx_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_Dbx'"
+		},
 		"ls_abs_PrimaryStorageAcct_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_abs_PrimaryStorageAcct'"
+		},
+		"AzureDatabricks_rs_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0309-165937-zm70ii7n"
+		},
+		"AzureKeyVault_rs_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://rs-kv-ADFLab.vault.azure.net/"
 		},
 		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_container": {
 			"type": "string",
@@ -62,8 +74,17 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"AzureBlobStorage_Dbx_connectionString": {
+						"value": "[parameters('AzureBlobStorage_Dbx_connectionString')]"
+					},
 					"ls_abs_PrimaryStorageAcct_connectionString": {
 						"value": "[parameters('ls_abs_PrimaryStorageAcct_connectionString')]"
+					},
+					"AzureKeyVault_rs_properties_typeProperties_baseUrl": {
+						"value": "[parameters('AzureKeyVault_rs_properties_typeProperties_baseUrl')]"
+					},
+					"AzureDatabricks_rs_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('AzureDatabricks_rs_properties_typeProperties_existingClusterId')]"
 					},
 					"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_container": {
 						"value": "[parameters('Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_container')]"
