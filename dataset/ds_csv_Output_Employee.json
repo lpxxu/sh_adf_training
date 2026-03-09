@@ -5,13 +5,34 @@
 			"referenceName": "ls_abs_PrimaryStorageAcct",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"pr_output_container": {
+				"type": "string"
+			},
+			"pr_output_folder": {
+				"type": "string"
+			},
+			"pr_output_filename": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "output",
-				"container": "adftutorial"
+				"fileName": {
+					"value": "@dataset().pr_output_filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().pr_output_folder",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().pr_output_container",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
