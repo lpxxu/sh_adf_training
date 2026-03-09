@@ -1,0 +1,11 @@
+{
+	"name": "ls_abs_PrimaryStorageAcct",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"serviceEndpoint": "https://xiaominxv4blob.blob.core.windows.net/",
+			"accountKind": "StorageV2"
+		}
+	}
+}
