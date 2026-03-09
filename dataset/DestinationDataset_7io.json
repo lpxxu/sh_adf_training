@@ -2,7 +2,7 @@
 	"name": "DestinationDataset_7io",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_abs_PrimaryStorageAcct",
+			"referenceName": "AzureBlobStorage_Dbx",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
