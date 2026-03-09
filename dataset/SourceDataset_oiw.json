@@ -1,0 +1,19 @@
+{
+	"name": "SourceDataset_oiw",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_dbx_adlsgen2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "part-00007-tid-5442711692984410951-c7e01748-4358-4f47-b62b-de796e2c6be0-0-c000.gz.parquet",
+				"fileSystem": "crime-data-2016"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

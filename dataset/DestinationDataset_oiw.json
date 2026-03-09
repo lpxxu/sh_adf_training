@@ -1,0 +1,19 @@
+{
+	"name": "DestinationDataset_oiw",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_dbx_adlsgen2",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "03.02",
+				"fileSystem": "dwtemp"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,4 +1,9 @@
 {
 	"name": "colbyadf",
-	"location": "centralus"
+	"location": "centralus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "1d20475f-25d9-4b73-b69f-dee4caf8148e",
+		"tenantId": "4cfe372a-37a4-44f8-91b2-5faf34253c62"
+	}
 }
