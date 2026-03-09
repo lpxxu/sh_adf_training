@@ -1,0 +1,91 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "rajsadf"
+		},
+		"ls_abs_PrimaryStorageAcct_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_abs_PrimaryStorageAcct'"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_container": {
+			"type": "string",
+			"defaultValue": "adftutorial"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_container": {
+			"type": "string",
+			"defaultValue": "adftutorial"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_folder": {
+			"type": "string",
+			"defaultValue": "input"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_folder": {
+			"type": "string",
+			"defaultValue": "output"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_filename": {
+			"type": "string",
+			"defaultValue": "emp.txt"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_filename": {
+			"type": "string",
+			"defaultValue": "emp_out.txt"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "rajsadf_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"ls_abs_PrimaryStorageAcct_connectionString": {
+						"value": "[parameters('ls_abs_PrimaryStorageAcct_connectionString')]"
+					},
+					"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_container": {
+						"value": "[parameters('Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_container')]"
+					},
+					"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_container": {
+						"value": "[parameters('Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_container')]"
+					},
+					"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_folder": {
+						"value": "[parameters('Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_folder')]"
+					},
+					"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_folder": {
+						"value": "[parameters('Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_folder')]"
+					},
+					"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_filename": {
+						"value": "[parameters('Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_filename')]"
+					},
+					"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_filename": {
+						"value": "[parameters('Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_filename')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}

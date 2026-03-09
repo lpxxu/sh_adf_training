@@ -1,0 +1,314 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "rajsadf"
+		},
+		"ls_abs_PrimaryStorageAcct_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_abs_PrimaryStorageAcct'"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_container": {
+			"type": "string",
+			"defaultValue": "adftutorial"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_container": {
+			"type": "string",
+			"defaultValue": "adftutorial"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_folder": {
+			"type": "string",
+			"defaultValue": "input"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_folder": {
+			"type": "string",
+			"defaultValue": "output"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_filename": {
+			"type": "string",
+			"defaultValue": "emp.txt"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_filename": {
+			"type": "string",
+			"defaultValue": "emp_out.txt"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/p_CopyEmployeeData')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Emp Data from Blob to Blob",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_csv_Input_Employee",
+								"type": "DatasetReference",
+								"parameters": {
+									"pr_container": "adftutorial",
+									"pr_folder": "input",
+									"pr_filename": "emp.txt"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_csv_Output_Employee",
+								"type": "DatasetReference",
+								"parameters": {
+									"pr_output_container": "adftutorial",
+									"pr_output_folder": "output",
+									"pr_output_filename": "emp_out.txt"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"pr_container": {
+						"type": "string"
+					},
+					"pr_output_container": {
+						"type": "string"
+					},
+					"pr_folder": {
+						"type": "string"
+					},
+					"pr_output_folder": {
+						"type": "string"
+					},
+					"pr_filename": {
+						"type": "string"
+					},
+					"pr_output_filename": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_csv_Input_Employee')]",
+				"[concat(variables('factoryId'), '/datasets/ds_csv_Output_Employee')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_csv_Input_Employee')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_abs_PrimaryStorageAcct",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"pr_container": {
+						"type": "string"
+					},
+					"pr_folder": {
+						"type": "string"
+					},
+					"pr_filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().pr_filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().pr_folder",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().pr_container",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "John",
+						"type": "String"
+					},
+					{
+						"name": " Doe",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_abs_PrimaryStorageAcct')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_csv_Output_Employee')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_abs_PrimaryStorageAcct",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"pr_output_container": {
+						"type": "string"
+					},
+					"pr_output_folder": {
+						"type": "string"
+					},
+					"pr_output_filename": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().pr_output_filename",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().pr_output_folder",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().pr_output_container",
+							"type": "Expression"
+						}
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_abs_PrimaryStorageAcct')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_abs_PrimaryStorageAcct')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_abs_PrimaryStorageAcct_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Trg_emp_Daily')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "p_CopyEmployeeData",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"pr_container": "[parameters('Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_container')]",
+							"pr_output_container": "[parameters('Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_container')]",
+							"pr_folder": "[parameters('Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_folder')]",
+							"pr_output_folder": "[parameters('Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_folder')]",
+							"pr_filename": "[parameters('Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_filename')]",
+							"pr_output_filename": "[parameters('Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_filename')]"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2026-03-09T12:00:00",
+						"timeZone": "Pacific Standard Time",
+						"schedule": {
+							"minutes": [
+								0
+							],
+							"hours": [
+								6
+							]
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/p_CopyEmployeeData')]"
+			]
+		}
+	]
+}

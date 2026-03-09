@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "rajsadf"
+		},
+		"ls_abs_PrimaryStorageAcct_connectionString": {
+			"value": ""
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_container": {
+			"value": "adftutorial"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_container": {
+			"value": "adftutorial"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_folder": {
+			"value": "input"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_folder": {
+			"value": "output"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_filename": {
+			"value": "emp.txt"
+		},
+		"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_output_filename": {
+			"value": "emp_out.txt"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
