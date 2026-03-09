@@ -1,0 +1,17 @@
+{
+	"name": "SourceDataset_7io",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_Dbx",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "crime-data-2016"
+			}
+		}
+	}
+}
