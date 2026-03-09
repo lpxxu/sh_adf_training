@@ -85,7 +85,10 @@
 					"notebookPath": "/Users/msstudent-59809865@lodsprodmca.onmicrosoft.com/Data-Ingestion-Via-ADF/ADF Notebooks/Transform Data in ADF (Using Azure Databricks)",
 					"baseParameters": {
 						"accountName": "adftutorialrs20260309",
-						"accountKey": "",
+						"accountKey": {
+							"value": "@pipeline().parameters.pr_accountkey",
+							"type": "Expression"
+						},
 						"containerName": "dwtemp"
 					}
 				},
@@ -95,6 +98,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"pr_accountkey": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
