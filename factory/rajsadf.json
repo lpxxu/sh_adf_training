@@ -1,4 +1,9 @@
 {
 	"name": "rajsadf",
-	"location": "westus"
+	"location": "westus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "3b70c13f-11b3-41f4-a529-fecaacc6eafb",
+		"tenantId": "4cfe372a-37a4-44f8-91b2-5faf34253c62"
+	}
 }
