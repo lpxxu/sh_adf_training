@@ -9,11 +9,8 @@
 		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "SALESLT",
-			"table": {
-				"value": "@dataset().Table",
-				"type": "Expression"
-			}
+			"schema": "SalesLT",
+			"table": "ProductStaging"
 		}
 	}
 }
