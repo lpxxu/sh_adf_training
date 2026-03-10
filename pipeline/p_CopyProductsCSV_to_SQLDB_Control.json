@@ -61,6 +61,10 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
+								"pipeline": {
+									"referenceName": "p_child_CopyProductsCSV_to_SQLDB",
+									"type": "PipelineReference"
+								},
 								"waitOnCompletion": true
 							}
 						},
