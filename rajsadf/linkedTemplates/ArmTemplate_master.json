@@ -113,6 +113,24 @@
 					},
 					"AzureDatabricks_rs_properties_typeProperties_existingClusterId": {
 						"value": "[parameters('AzureDatabricks_rs_properties_typeProperties_existingClusterId')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "rajsadf_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
 					},
 					"Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_container": {
 						"value": "[parameters('Trg_emp_Daily_properties_p_CopyEmployeeData_parameters_pr_container')]"
@@ -134,7 +152,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'rajsadf_ArmTemplate_0')]"
+			]
 		}
 	]
 }
