@@ -1,0 +1,17 @@
+{
+	"name": "ds_par_Input_CrimeData",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_abs_Public_2016Crime_Dataset",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "crime-data-2016"
+			}
+		}
+	}
+}
