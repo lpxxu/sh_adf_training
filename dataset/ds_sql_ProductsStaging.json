@@ -5,24 +5,11 @@
 			"referenceName": "ls_sqldb_AdventureWorksLT",
 			"type": "LinkedServiceReference"
 		},
-		"parameters": {
-			"Schema": {
-				"type": "string",
-				"defaultValue": "SalesLT"
-			},
-			"Table": {
-				"type": "string",
-				"defaultValue": "ProductStaging"
-			}
-		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": {
-				"value": "@dataset().Schema",
-				"type": "Expression"
-			},
+			"schema": "SALESLT",
 			"table": {
 				"value": "@dataset().Table",
 				"type": "Expression"
