@@ -10,6 +10,21 @@
 		},
 		"ls_abs_Public_2016Crime_Dataset_connectionString": {
 			"value": ""
+		},
+		"ls_abs_SecondaryStorageAcct_connectionString": {
+			"value": ""
+		},
+		"ls_sqldb_AdventureWorksLT_password": {
+			"value": ""
+		},
+		"ls_sqldb_AdventureWorksLT_properties_typeProperties_server": {
+			"value": "xiaominxv4sqlserver.database.windows.net"
+		},
+		"ls_sqldb_AdventureWorksLT_properties_typeProperties_database": {
+			"value": "xiaominxv4sqldb"
+		},
+		"ls_sqldb_AdventureWorksLT_properties_typeProperties_userName": {
+			"value": "datafactadmin"
 		}
 	}
 }

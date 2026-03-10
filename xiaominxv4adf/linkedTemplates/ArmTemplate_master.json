@@ -15,6 +15,26 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_abs_Public_2016Crime_Dataset'"
 		},
+		"ls_abs_SecondaryStorageAcct_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_abs_SecondaryStorageAcct'"
+		},
+		"ls_sqldb_AdventureWorksLT_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_sqldb_AdventureWorksLT'"
+		},
+		"ls_sqldb_AdventureWorksLT_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "xiaominxv4sqlserver.database.windows.net"
+		},
+		"ls_sqldb_AdventureWorksLT_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "xiaominxv4sqldb"
+		},
+		"ls_sqldb_AdventureWorksLT_properties_typeProperties_userName": {
+			"type": "string",
+			"defaultValue": "datafactadmin"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -47,6 +67,21 @@
 					},
 					"ls_abs_Public_2016Crime_Dataset_connectionString": {
 						"value": "[parameters('ls_abs_Public_2016Crime_Dataset_connectionString')]"
+					},
+					"ls_abs_SecondaryStorageAcct_connectionString": {
+						"value": "[parameters('ls_abs_SecondaryStorageAcct_connectionString')]"
+					},
+					"ls_sqldb_AdventureWorksLT_password": {
+						"value": "[parameters('ls_sqldb_AdventureWorksLT_password')]"
+					},
+					"ls_sqldb_AdventureWorksLT_properties_typeProperties_server": {
+						"value": "[parameters('ls_sqldb_AdventureWorksLT_properties_typeProperties_server')]"
+					},
+					"ls_sqldb_AdventureWorksLT_properties_typeProperties_database": {
+						"value": "[parameters('ls_sqldb_AdventureWorksLT_properties_typeProperties_database')]"
+					},
+					"ls_sqldb_AdventureWorksLT_properties_typeProperties_userName": {
+						"value": "[parameters('ls_sqldb_AdventureWorksLT_properties_typeProperties_userName')]"
 					}
 				}
 			},
