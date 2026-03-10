@@ -1,5 +1,5 @@
 {
-	"name": "p_CopyProductsCSV_to_SQLDB",
+	"name": "p_child_CopyProductsCSV_to_SQLDB",
 	"properties": {
 		"activities": [
 			{
