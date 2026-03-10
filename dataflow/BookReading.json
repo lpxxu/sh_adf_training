@@ -10,6 +10,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "BooksCSV"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_csv_Trixies_History",
+						"type": "DatasetReference"
+					},
+					"name": "TrixiesHistory"
 				}
 			],
 			"sinks": [],
@@ -32,7 +39,25 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> BooksCSV"
+				"     ignoreNoFilesFound: false) ~> BooksCSV",
+				"source(output(",
+				"          Book_Id as integer '##0',",
+				"          ISBN as string,",
+				"          ISBN13 as string,",
+				"          My_Rating as integer '##0',",
+				"          Date_Read as date 'dd/MM/yyyy',",
+				"          Date_Added as date 'dd/MM/yyyy',",
+				"          Bookshelves as string,",
+				"          Exclusive_Shelf as string,",
+				"          My_Review as string,",
+				"          Spoiler as boolean,",
+				"          Private_Notes as string,",
+				"          Read_Count as integer '##0',",
+				"          Original_Purchase_Date as date 'dd/MM/yyyy'",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> TrixiesHistory"
 			]
 		}
 	}
