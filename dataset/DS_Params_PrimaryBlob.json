@@ -11,11 +11,11 @@
 				"defaultValue": "originals"
 			},
 			"folder": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "source"
 			},
 			"filename": {
-				"type": "string",
-				"defaultValue": "Books.csv"
+				"type": "string"
 			}
 		},
 		"annotations": [],
