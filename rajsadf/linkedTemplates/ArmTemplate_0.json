@@ -1034,6 +1034,33 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_csv_ReadersBooksInnerJoin')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_abs_PrimaryStorageAcct",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "originals"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_abs_PrimaryStorageAcct')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/p_CopyBookListing')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1121,112 +1148,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SourceDataset_sge')]",
 				"[concat(variables('factoryId'), '/datasets/DestinationDataset_sge')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/p_CopyEmployeeData')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Copy Emp Data from Blob to Blob",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "DelimitedTextSink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								},
-								"formatSettings": {
-									"type": "DelimitedTextWriteSettings",
-									"quoteAllText": true,
-									"fileExtension": ".txt"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "ds_csv_Input_Employee",
-								"type": "DatasetReference",
-								"parameters": {
-									"pr_container": "adftutorial",
-									"pr_folder": "input",
-									"pr_filename": "emp.txt"
-								}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "ds_csv_Output_Employee",
-								"type": "DatasetReference",
-								"parameters": {
-									"pr_output_container": "adftutorial",
-									"pr_output_folder": "output",
-									"pr_output_filename": "emp_out.txt"
-								}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"parameters": {
-					"pr_container": {
-						"type": "string"
-					},
-					"pr_output_container": {
-						"type": "string"
-					},
-					"pr_folder": {
-						"type": "string"
-					},
-					"pr_output_folder": {
-						"type": "string"
-					},
-					"pr_filename": {
-						"type": "string"
-					},
-					"pr_output_filename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"lastPublishTime": "2026-03-09T16:08:04Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/ds_csv_Input_Employee')]",
-				"[concat(variables('factoryId'), '/datasets/ds_csv_Output_Employee')]"
 			]
 		}
 	]

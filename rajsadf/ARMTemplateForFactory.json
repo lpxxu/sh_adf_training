@@ -1919,6 +1919,213 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/ls_abs_PrimaryStorageAcct')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/BookReading')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_csv_books",
+								"type": "DatasetReference"
+							},
+							"name": "BooksCSV"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_csv_Svens_History",
+								"type": "DatasetReference"
+							},
+							"name": "SvensHistory"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_csv_ReadersBooksInnerJoin",
+								"type": "DatasetReference"
+							},
+							"name": "ReadersBooksInnerJoin"
+						}
+					],
+					"transformations": [
+						{
+							"name": "AllReaders"
+						},
+						{
+							"name": "SortReadingHistory"
+						},
+						{
+							"name": "JoinReaderstoBooks"
+						},
+						{
+							"name": "RemoveDuplicateColumns"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Book_Id as integer '##0',",
+						"          ISBN as string,",
+						"          ISBN13 as string,",
+						"          Title as string,",
+						"          Author as string,",
+						"          {Author_l-f} as string,",
+						"          Additional_Authors as string,",
+						"          Average_Rating as float '0.00',",
+						"          Publisher as string,",
+						"          Binding as string,",
+						"          Number_of_Pages as integer '##0',",
+						"          Year_Published as integer '##0',",
+						"          Original_Publication_Year as integer '##0'",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> BooksCSV",
+						"source(output(",
+						"          Book_Id as integer '##0',",
+						"          ISBN as string,",
+						"          ISBN13 as string,",
+						"          Title as string,",
+						"          Author as string,",
+						"          {Author_l-f} as string,",
+						"          Additional_Authors as string,",
+						"          Average_Rating as float '0.00',",
+						"          Publisher as string,",
+						"          Binding as string,",
+						"          Number_of_Pages as integer '##0',",
+						"          Year_Published as integer '##0',",
+						"          Original_Publication_Year as integer '##0'",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> SvensHistory",
+						"BooksCSV, SvensHistory union(byName: true)~> AllReaders",
+						"AllReaders sort(asc(Book_Id, true)) ~> SortReadingHistory",
+						"SortReadingHistory, BooksCSV join(AllReaders@Book_Id == BooksCSV@Book_Id",
+						"     && AllReaders@ISBN == BooksCSV@ISBN,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> JoinReaderstoBooks",
+						"JoinReaderstoBooks select(mapColumn(",
+						"          Book_Id = AllReaders@Book_Id,",
+						"          ISBN = AllReaders@ISBN,",
+						"          ISBN13 = AllReaders@ISBN13,",
+						"          Title = AllReaders@Title,",
+						"          Author = AllReaders@Author,",
+						"          {Author_l-f} = AllReaders@{Author_l-f},",
+						"          Additional_Authors = AllReaders@Additional_Authors,",
+						"          Average_Rating = AllReaders@Average_Rating,",
+						"          Publisher = AllReaders@Publisher,",
+						"          Binding = AllReaders@Binding,",
+						"          Number_of_Pages = AllReaders@Number_of_Pages,",
+						"          Year_Published = AllReaders@Year_Published,",
+						"          Original_Publication_Year = AllReaders@Original_Publication_Year,",
+						"          Title = BooksCSV@Title,",
+						"          Author = BooksCSV@Author,",
+						"          {Author_l-f} = BooksCSV@{Author_l-f},",
+						"          Additional_Authors = BooksCSV@Additional_Authors,",
+						"          Average_Rating = BooksCSV@Average_Rating,",
+						"          Publisher = BooksCSV@Publisher,",
+						"          Binding = BooksCSV@Binding,",
+						"          Number_of_Pages = BooksCSV@Number_of_Pages,",
+						"          Year_Published = BooksCSV@Year_Published,",
+						"          Original_Publication_Year = BooksCSV@Original_Publication_Year",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> RemoveDuplicateColumns",
+						"RemoveDuplicateColumns sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     partitionFileNames:['InnerJoinDataset.csv'],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> ReadersBooksInnerJoin"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_csv_books')]",
+				"[concat(variables('factoryId'), '/datasets/ds_csv_Svens_History')]",
+				"[concat(variables('factoryId'), '/datasets/ds_csv_ReadersBooksInnerJoin')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_csv_ReadersBooksInnerJoin')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_abs_PrimaryStorageAcct",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "originals"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_abs_PrimaryStorageAcct')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/p_RunBookReadingDataflow')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Run BookReading Flow",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "BookReading",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"BooksCSV": {},
+									"SvensHistory": {},
+									"ReadersBooksInnerJoin": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/BookReading')]"
+			]
 		}
 	]
 }
