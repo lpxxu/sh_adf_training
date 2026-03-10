@@ -1,0 +1,21 @@
+{
+	"name": "ds_csv_Svens_History",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_abs_PrimaryStorageAcct",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
