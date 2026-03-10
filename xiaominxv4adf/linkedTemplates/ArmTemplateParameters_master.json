@@ -10,6 +10,12 @@
 		},
 		"ls_abs_Public_2016Crime_Dataset_connectionString": {
 			"value": ""
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
 		}
 	}
 }
