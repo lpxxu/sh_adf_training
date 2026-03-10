@@ -849,7 +849,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/p_CopyProductsCSV_to_SQLDB')]",
+			"name": "[concat(parameters('factoryName'), '/p_child_CopyProductsCSV_to_SQLDB')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -1383,6 +1383,136 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/p_CopyEmployeeData')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/p_CopyProductsCSV_to_SQLDB_Control')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup Staging Row Count",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[SalesLT].[usp_GetRowCountProductStaging]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sql_ProductsStaging",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "Actions on Staging Row Count",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Lookup Staging Row Count",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@equals(activity('Lookup Staging Row Count').output.firstRow.RowCount, 0)",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Import Data on False",
+									"type": "ExecutePipeline",
+									"dependsOn": [
+										{
+											"activity": "Truncate Staging Table",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "p_child_CopyProductsCSV_to_SQLDB",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {}
+									}
+								},
+								{
+									"name": "Truncate Staging Table",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[SalesLT].[usp_TruncateProductStaging]"
+									},
+									"linkedServiceName": {
+										"referenceName": "ls_sqldb_AdventureWorksLT",
+										"type": "LinkedServiceReference"
+									}
+								}
+							],
+							"ifTrueActivities": [
+								{
+									"name": "Import Data on True",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "p_child_CopyProductsCSV_to_SQLDB",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"EmailTo": "raj.srinivasan@selecthealth.org"
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_sql_ProductsStaging')]",
+				"[concat(variables('factoryId'), '/pipelines/p_child_CopyProductsCSV_to_SQLDB')]",
+				"[concat(variables('factoryId'), '/linkedServices/ls_sqldb_AdventureWorksLT')]"
 			]
 		}
 	]
