@@ -67,7 +67,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DestinationDataset_yth",
+						"referenceName": "ds_csv_output_BookListing",
 						"type": "DatasetReference"
 					}
 				]

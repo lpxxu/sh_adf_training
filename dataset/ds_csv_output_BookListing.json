@@ -1,5 +1,5 @@
 {
-	"name": "DestinationDataset_yth",
+	"name": "ds_csv_output_BookListing",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_abs_PrimaryStorageAcct",
