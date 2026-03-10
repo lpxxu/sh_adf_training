@@ -257,7 +257,14 @@
 			{
 				"name": "Validate Import Rows",
 				"type": "SqlServerStoredProcedure",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Import CSV",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -277,7 +284,14 @@
 			{
 				"name": "Send Failure Notification",
 				"type": "WebActivity",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Validate Import Rows",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -298,6 +312,37 @@
 						"PipelineStatus": "Completed with Error(s)",
 						"ErrorMessage": "@{activity('Validate Import Rows').error.message}",
 						"EmailTo": "@{pipeline().parameters.EmailTo}"
+					}
+				}
+			},
+			{
+				"name": "Send Success Notification",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Validate Import Rows",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"url": "https://prod-23.westus2.logic.azure.com:443/workflows/b92a5183e73c4e658b7d528514ed416a/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=vatH5RAHfdSl4wGNxvmICy7B5Y6GVcfwLorfPyS15wc",
+					"body": {
+						"value": "{\n    \"DataFactoryName\":\n        \"@{pipeline().DataFactory}\",\n    \"PipelineName\":\n        \"@{pipeline().Pipeline}\",\n    \"PipelineStatus\":\n        \"Completed Successfully\",\n    \"EmailTo\":\n        \"@{pipeline().parameters.EmailTo}\"\n}",
+						"type": "Expression"
 					}
 				}
 			}
