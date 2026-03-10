@@ -1,0 +1,22 @@
+{
+	"name": "ds_csv_ReadersBooksInnerJoin",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_abs_PrimaryStorageAcct",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "originals"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
