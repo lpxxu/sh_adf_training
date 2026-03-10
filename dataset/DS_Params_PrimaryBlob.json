@@ -1,0 +1,46 @@
+{
+	"name": "DS_Params_PrimaryBlob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_abs_PrimaryStorageAcct",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"conatiner": {
+				"type": "string",
+				"defaultValue": "originals"
+			},
+			"folder": {
+				"type": "string"
+			},
+			"filename": {
+				"type": "string",
+				"defaultValue": "Books.csv"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().folder",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "@dataset().conatiner",
+					"type": "Expression"
+				}
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
